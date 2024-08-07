@@ -25,7 +25,7 @@ public enum DateExtensionDisplayMode {
     case relative          // Relative (e.g. "today", "yesterday", "2 days ago")
     case unixTimestamp     // Unix Timestamp
     case custom(String)    // Custom format
-    case iso8061           // ISO 8601 (e.g. "2023-12-31T14:35:50.123Z")
+    case iso8601           // ISO 8601 (e.g. "2023-12-31T14:35:50.123Z")
     case rfc2822           // RFC 2822 (e.g. "Sun, 31 Dec 2023 14:35:50 +0000")
     case rfc3339           // RFC 3339 (e.g. "2023-12-31T14:35:50+00:00")
     case yyyyMM            // Year and Month (e.g. "2023-12")
@@ -211,7 +211,7 @@ public extension String {
             return "\(Int(date.timeIntervalSince1970))"
         case .custom(let customFormat):
             formatter.dateFormat = customFormat
-        case .iso8061:
+        case .iso8601:
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         case .rfc2822:
             formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
