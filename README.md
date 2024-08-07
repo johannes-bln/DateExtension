@@ -71,8 +71,3 @@ struct ContentView: View {
 ```
 
 In this example, a date and time within a text are automatically detected and converted into the ISO 8601 format `2023-12-31T14:35:50Z`.
-
-
-## Usage
-
-The examples show how easy it is to automatically detect date formats within texts and convert them into the desired format using `DateExtension`. You only need to specify the desired `DateExtensionDisplayMode`, and the library takes care of the rest.
