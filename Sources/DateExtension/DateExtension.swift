@@ -61,6 +61,7 @@ public extension String {
             "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
             "yyyy-MM-dd'T'HH:mm:ssZ",
             "yyyy-MM-dd HH:mm:ss",
+            "dd-MM-yyyy HH:mm:ss",
             "yyyy-MM-dd",
             "dd.MM.yyyy",
             "MM/dd/yyyy",
