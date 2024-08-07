@@ -63,7 +63,7 @@ struct ContentView: View {
     func fetchFunc() {
         let time = "12:23:00"
         let date = "12.09.2024"
-        let iso8601 = "\(date) \(time)".formattedDate(.iso8601WithMilliseconds)
+        let iso8601 = "\(date) \(time)".formattedDate(.iso8601)
         
         print(iso8601)
     }
