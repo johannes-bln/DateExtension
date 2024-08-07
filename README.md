@@ -76,7 +76,3 @@ In this example, a date and time within a text are automatically detected and co
 ## Usage
 
 The examples show how easy it is to automatically detect date formats within texts and convert them into the desired format using `DateExtension`. You only need to specify the desired `DateExtensionDisplayMode`, and the library takes care of the rest.
-
-
-
-<img width="1408" alt="ExampleCode" src="https://github.com/user-attachments/assets/a5cb733d-fb2c-4016-8b54-32627edd12a3">
