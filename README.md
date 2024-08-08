@@ -9,15 +9,14 @@
   
 ## Installation
 
-### Swift Package Manager
+To install this package, follow these steps:
 
-Add the following line to your `Package.swift` file:
+1. Go to `General` -> `Frameworks, Libraries, and Embedded Content`.
+2. Click on the `+` button.
+3. Click on the "Add More" dropdown and select `Add Package Dependency...`.
+4. Paste the following URL in the top right: `https://github.com/johannesxdev/DateExtension.git`.
+5. Click on `Add Package` and then again on `Add Package` in the next window.
 
-```swift
-dependencies: [
-    .package(url: "https://github.com/johannesxdev/DateExtension.git", from: "1.0.0")
-]
-```
 
 Then, import the library in your Swift files:
 
