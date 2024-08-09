@@ -9,69 +9,70 @@ import Foundation
 /// Each case defines a specific format in which a date can be represented.
 ///
 public enum DateExtensionDisplayMode {
-    /// - Parameter modifier: Hours:Minutes:Seconds (e.g. "14:35:50")
-    case hhmmss            // Hours:Minutes:Seconds (e.g. "14:35:50")
+    /// Hours:Minutes:Seconds (e.g. "14:35:50")
+    case hhmmss
     
-    /// - Parameter modifier: Hours:Minutes (e.g. "14:35")
-    case hhmm              //
+    /// Hours:Minutes (e.g. "14:35")
+    case hhmm
     
-    /// - Parameter modifier: Minutes:Seconds (e.g. "35:50")
-    case mmss              //
+    /// Minutes:Seconds (e.g. "35:50")
+    case mmss
     
-    /// - Parameter modifier: Hours:Minutes AM/PM (e.g. "02:35 PM")
-    case hhmmAMPM          //
+    /// Hours:Minutes AM/PM (e.g. "02:35 PM")
+    case hhmmAMPM
     
-    /// - Parameter modifier: Hours:Minutes:Seconds AM/PM (e.g. "02:35:50 PM")
-    case hhmmssAMPM        //
+    /// Hours:Minutes:Seconds AM/PM (e.g. "02:35:50 PM")
+    case hhmmssAMPM
     
-    /// - Parameter modifier: Day.Month.Year (e.g. "31.12.2023")
-    case ddMMyyyy          //
+    /// Day.Month.Year (e.g. "31.12.2023")
+    case ddMMyyyy
     
-    /// - Parameter modifier: Month/Day/Year (e.g. "12/31/2023")
-    case MMddyyyy          //
+    /// Month/Day/Year (e.g. "12/31/2023")
+    case MMddyyyy
     
-    /// - Parameter modifier: Year-Month-Day (e.g. "2023-12-31")
-    case yyyyMMdd          //
+    /// Year-Month-Day (e.g. "2023-12-31")
+    case yyyyMMdd
     
-    /// - Parameter modifier: Day Month Year in full (e.g. "31 December 2023")
-    case ddMMMMyyyy        //
+    /// Day Month Year in full (e.g. "31 December 2023")
+    case ddMMMMyyyy
     
-    /// - Parameter modifier: Weekday, Day Month Year in full (e.g. "Sunday, 31 December 2023")
-    case EEEEddMMMMyyyy    //
+    /// Weekday, Day Month Year in full (e.g. "Sunday, 31 December 2023")
+    case EEEEddMMMMyyyy
     
-    /// - Parameter modifier: Year-Month-Day Hours:Minutes:Seconds (e.g. "2023-12-31 14:35:50")
-    case yyyyMMddHHmmss    //
+    /// Year-Month-Day Hours:Minutes:Seconds (e.g. "2023-12-31 14:35:50")
+    case yyyyMMddHHmmss
     
-    /// - Parameter modifier: ISO 8601 (e.g. "2023-12-31T14:35:50Z")
-    case yyyyMMddTHHmmssZ  //
+    /// ISO 8601 (e.g. "2023-12-31T14:35:50Z")
+    case yyyyMMddTHHmmssZ
     
-    /// - Parameter modifier: Day.Month.Year Hours:Minutes (e.g. "31.12.2023 14:35")
-    case ddMMyyyyHHmm      //
+    /// Day.Month.Year Hours:Minutes (e.g. "31.12.2023 14:35")
+    case ddMMyyyyHHmm
     
-    /// - Parameter modifier: Relative (e.g. "today", "yesterday", "2 days ago")
-    case relative          //
+    /// Relative (e.g. "today", "yesterday", "2 days ago")
+    case relative
     
-    /// - Parameter modifier: Unix Timestamp
-    case unixTimestamp     //
+    /// Unix Timestamp
+    case unixTimestamp
     
-    /// - Parameter modifier: Custom format
-    case custom(String)    //
+    /// Custom format
+    case custom(String)
     
-    /// - Parameter modifier: ISO 8601 (e.g. "2023-12-31T14:35:50.123Z")
-    case iso8601           //
+    /// ISO 8601 with milliseconds (e.g. "2023-12-31T14:35:50.123Z")
+    case iso8601
     
-    /// - Parameter modifier: RFC 2822 (e.g. "Sun, 31 Dec 2023 14:35:50 +0000")
-    case rfc2822           //
+    /// RFC 2822 (e.g. "Sun, 31 Dec 2023 14:35:50 +0000")
+    case rfc2822
     
-    /// - Parameter modifier: RFC 3339 (e.g. "2023-12-31T14:35:50+00:00")
-    case rfc3339           //
+    /// RFC 3339 (e.g. "2023-12-31T14:35:50+00:00")
+    case rfc3339
     
-    /// - Parameter modifier: Year and Month (e.g. "2023-12")
-    case yyyyMM            //
+    /// Year and Month (e.g. "2023-12")
+    case yyyyMM
     
-    /// - Parameter modifier: Day and Month in full (e.g. "31 December")
-    case ddMMMM            //
+    /// Day and Month in full (e.g. "31 December")
+    case ddMMMM
 }
+
 
 /// An extension on `String` to provide date parsing and formatting capabilities.
 ///
