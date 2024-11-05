@@ -76,7 +76,7 @@ public enum DateExtensionDisplayMode {
 
 /// An extension on `String` to provide date parsing and formatting capabilities.
 ///
-@available(iOS 15.0, *)
+@available(iOS 13.0, *)
 public extension String {
     
     
