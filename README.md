@@ -1,6 +1,6 @@
 # DateExtension
 
-`DateExtension` is a little Swift Library for formatting date strings or different dates, such as those returned by (REST) APIs. It can process and automatically recognize different date formats and convert date strings into the desired format.d format.
+`DateExtension` is a little Swift Library for formatting date strings or different dates, such as those returned by (REST) APIs in a human readable Format. It can process and automatically recognize different date formats and convert date strings into the desired format
 
 ## Features
 
