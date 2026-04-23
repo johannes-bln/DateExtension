@@ -1,270 +1,332 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
-import SwiftUI
 import Foundation
 
 @available(iOS 13.0, *)
-
-/// An enumeration representing various display modes for date formatting.
-/// Each case defines a specific format in which a date can be represented.
-///
 public enum DateExtensionDisplayMode {
-    /// Hours:Minutes:Seconds (e.g. "14:35:50")
     case hhmmss
-    
-    /// Hours:Minutes (e.g. "14:35")
     case hhmm
-    
-    /// Minutes:Seconds (e.g. "35:50")
     case mmss
-    
-    /// Hours:Minutes AM/PM (e.g. "02:35 PM")
     case hhmmAMPM
-    
-    /// Hours:Minutes:Seconds AM/PM (e.g. "02:35:50 PM")
     case hhmmssAMPM
-    
-    /// Day.Month.Year (e.g. "31.12.2023")
     case ddMMyyyy
-    
-    /// Month/Day/Year (e.g. "12/31/2023")
     case MMddyyyy
-    
-    /// Year-Month-Day (e.g. "2023-12-31")
     case yyyyMMdd
-    
-    /// Day Month Year in full (e.g. "31 December 2023")
     case ddMMMMyyyy
-    
-    /// Weekday, Day Month Year in full (e.g. "Sunday, 31 December 2023")
     case EEEEddMMMMyyyy
-    
-    /// Year-Month-Day Hours:Minutes:Seconds (e.g. "2023-12-31 14:35:50")
     case yyyyMMddHHmmss
-    
-    /// ISO 8601 (e.g. "2023-12-31T14:35:50Z")
     case yyyyMMddTHHmmssZ
-    
-    /// Day.Month.Year Hours:Minutes (e.g. "31.12.2023 14:35")
     case ddMMyyyyHHmm
-    
-    /// Relative (e.g. "today", "yesterday", "2 days ago")
     case relative
-    
-    /// Unix Timestamp
     case unixTimestamp
-    
-    /// Custom format
     case custom(String)
-    
-    /// ISO 8601 with milliseconds (e.g. "2023-12-31T14:35:50.123Z")
     case iso8601
-    
-    /// RFC 2822 (e.g. "Sun, 31 Dec 2023 14:35:50 +0000")
     case rfc2822
-    
-    /// RFC 3339 (e.g. "2023-12-31T14:35:50+00:00")
     case rfc3339
-    
-    /// Year and Month (e.g. "2023-12")
     case yyyyMM
-    
-    /// Day and Month in full (e.g. "31 December")
     case ddMMMM
 }
 
-
-/// An extension on `String` to provide date parsing and formatting capabilities.
-///
 @available(iOS 13.0, *)
 public extension String {
-    
-    
-    ///   Converts a `String` to a `Date` object based on the provided format.
-    ///
-    /// - Parameter format: The date format to be used for conversion.
-    /// - Returns: A `Date` object if the conversion is successful, otherwise `nil`.
-    ///
+    /// Converts a `String` to a `Date` using the supplied format string.
     func toDate(format: String) -> Date? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = format
-        formatter.locale = Locale.autoupdatingCurrent
-        return formatter.date(from: self)
+        DateParser.shared.parse(self, format: format)
     }
 
-    
-    ///   Attempts to detect and convert a `String`  to a `Date` object based on a set of predefined formats.
-    ///
-    /// - Returns: a `Date` Object if a matching Format is founded, otherwise `nil`.
-    ///
+    /// Detects many common date/time representations and converts them to `Date`.
     func detectedDate() -> Date? {
-        
-        let formats = [
-            "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-            "yyyy-MM-dd'T'HH:mm:ssZ",
-            "yyyy-MM-dd HH:mm:ss",
-            "dd-MM-yyyy HH:mm:ss",
-            "yyyy-MM-dd",
-            "dd.MM.yyyy",
-            "MM/dd/yyyy",
-            "dd MMMM yyyy",
-            "EEEE, dd MMMM yyyy",
-            "HH:mm:ss",
-            "HH:mm",
-            "hh:mm a",
-            "hh:mm:ss a",
-            "yyyy-MM",
-            "dd MMMM",
-            "MMM dd, yyyy",
-            "dd MMM yyyy",
-            "MM/dd/yy",
-            "dd-MM-yy",
-            "yyyy/MM/dd",
-            "yy/MM/dd",
-            "dd/MM/yy",
-            "MM-dd-yyyy",
-            "EEEE, MMMM dd, yyyy",
-            "yyyyMMdd",
-            "ddMMyyyy",
-            "MMddyyyy",
-            "dd.MM.yy",
-            "MM.dd.yyyy",
-            "yyyy.MM.dd",
-            "HH:mm:ss.SSS",
-            "yyyy/MM/dd HH:mm:ss",
-            "dd-MM-yyyy HH:mm",
-            "yyyyMMddHHmmss",
-            "yyyy-MM-dd'T'HH:mm:ss",
-            "yyyy-MM-dd'T'HH:mm",
-            "EEE, dd MMM yyyy HH:mm:ss Z",
-            "yyyy-MM-dd HH:mm",
-            "MMMM dd, yyyy",
-            "EEE, MMM dd, yyyy",
-            "EEE, dd MMM yyyy",
-            "dd MMM, yyyy",
-            "MMM dd, yyyy HH:mm:ss",
-            "MMMM dd",
-            "EEEE, MMM dd, yyyy",
-            "yyyyMMdd'T'HHmmss",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
-            "yyyy-MM-dd'T'HH:mm:ssXXX",
-            "yyyy-MM-dd'T'HH:mmXXX",
-            "yyyy-MM-dd HH:mm:ss.SSS",
-            "dd/MM/yyyy HH:mm:ss",
-            "yyyyMMddHHmmssSSS",
-            "EEE, dd MMM yyyy HH:mm:ss",
-            "yyyy-MM-dd'T'HHmmss",
-            "yyyy-MM-dd HHmmss",
-            "dd-MM-yyyy'T'HH:mm:ss",
-            "EEEE, dd.MM.yyyy HH:mm:ss",
-            "MMMM dd, yyyy HH:mm:ss",
-            "yyyy/MM/dd'T'HH:mm:ss.SSS",
-            "EEE, dd.MM.yyyy HH:mm",
-            "yyyy-MM-dd'T'HH:mm:ssZ",
-            "EEE, dd.MM.yyyy",
-            "dd-MM-yyyy'T'HH:mm",
-            "dd.MM.yyyy'T'HH:mm:ss",
-            "dd-MM-yyyy'T'HHmmss",
-            "dd.MM.yyyy'T'HHmmss",
-            "dd-MM-yy HH:mm:ss",
-            "yyyy-MM-dd'T'HHmmss.SSS",
-            "yyyyMMdd'T'HH:mm:ss.SSSZ",
-            "EEEE, MMMM dd, yyyy HH:mm:ss",
-            "EEEE, dd MMMM yyyy HH:mm:ss",
-            "MMM dd, yyyy HH:mm",
-            "MMM dd, yyyy HH:mm:ss.SSS",
-            "dd MMMM yyyy HH:mm",
-            "EEE, MMM dd, yyyy HH:mm:ss",
-            "EEE, dd MMM yyyy HH:mm",
-            "yyyyMMdd HH:mm:ss",
-            "dd.MM.yy HH:mm:ss",
-            "MMM dd, yyyy HH:mm:ss a",
-            "MMMM dd, yyyy HH:mm a",
-            "yyyy/MM/dd HH:mm",
-            "yyyy-MM-dd HH:mm:ssZ",
-            "dd/MM/yyyy'T'HH:mm:ss.SSSZ",
-            "yyyyMMdd'T'HH:mm:ss.SSSXXX",
-            "EEEE, dd.MM.yyyy'T'HH:mm:ss.SSS",
-            "MMMM dd yyyy, HH:mm:ss",
-            "EEEE, dd MMM yyyy HH:mm:ss.SSS",
-            "EEE, MMM dd yyyy HH:mm:ss.SSS",
-            "MMM dd yyyy HH:mm:ss.SSS",
-            "yyyy-MM-dd'T'HH:mm:ss.SSS",
-            "dd.MM.yyyy HH:mm",
-            "dd/MM/yyyy HH:mm",
-            "dd MMM yyyy HH:mm:ss",
-            "dd MMM yyyy HH:mm:ss.SSS",
-            "EEE, MMM dd yyyy HH:mm:ss a"
-        ]
+        DateParser.shared.detect(self)
+    }
 
-        
-        for format in formats {
-            if let date = self.toDate(format: format) {
+    /// Formats a detected date string according to the supplied display mode.
+    /// Returns the original string when no date could be detected.
+    func formattedDate(_ mode: DateExtensionDisplayMode) -> String {
+        guard let date = detectedDate() else { return self }
+        return DateFormatterFactory.shared.string(from: date, mode: mode)
+    }
+}
+
+@available(iOS 13.0, *)
+private final class DateParser {
+    static let shared = DateParser()
+
+    private init() {}
+
+    private let knownFormats: [String] = [
+        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+        "yyyy-MM-dd'T'HH:mm:ssZ",
+        "yyyy-MM-dd HH:mm:ss",
+        "dd-MM-yyyy HH:mm:ss",
+        "yyyy-MM-dd",
+        "dd.MM.yyyy",
+        "MM/dd/yyyy",
+        "dd MMMM yyyy",
+        "EEEE, dd MMMM yyyy",
+        "HH:mm:ss",
+        "HH:mm",
+        "hh:mm a",
+        "hh:mm:ss a",
+        "yyyy-MM",
+        "dd MMMM",
+        "MMM dd, yyyy",
+        "dd MMM yyyy",
+        "MM/dd/yy",
+        "dd-MM-yy",
+        "yyyy/MM/dd",
+        "yy/MM/dd",
+        "dd/MM/yy",
+        "MM-dd-yyyy",
+        "EEEE, MMMM dd, yyyy",
+        "yyyyMMdd",
+        "ddMMyyyy",
+        "MMddyyyy",
+        "dd.MM.yy",
+        "MM.dd.yyyy",
+        "yyyy.MM.dd",
+        "HH:mm:ss.SSS",
+        "yyyy/MM/dd HH:mm:ss",
+        "dd-MM-yyyy HH:mm",
+        "yyyyMMddHHmmss",
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "yyyy-MM-dd'T'HH:mm",
+        "EEE, dd MMM yyyy HH:mm:ss Z",
+        "yyyy-MM-dd HH:mm",
+        "MMMM dd, yyyy",
+        "EEE, MMM dd, yyyy",
+        "EEE, dd MMM yyyy",
+        "dd MMM, yyyy",
+        "MMM dd, yyyy HH:mm:ss",
+        "MMMM dd",
+        "EEEE, MMM dd, yyyy",
+        "yyyyMMdd'T'HHmmss",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+        "yyyy-MM-dd'T'HH:mm:ssXXX",
+        "yyyy-MM-dd'T'HH:mmXXX",
+        "yyyy-MM-dd HH:mm:ss.SSS",
+        "dd/MM/yyyy HH:mm:ss",
+        "yyyyMMddHHmmssSSS",
+        "EEE, dd MMM yyyy HH:mm:ss",
+        "yyyy-MM-dd'T'HHmmss",
+        "yyyy-MM-dd HHmmss",
+        "dd-MM-yyyy'T'HH:mm:ss",
+        "EEEE, dd.MM.yyyy HH:mm:ss",
+        "MMMM dd, yyyy HH:mm:ss",
+        "yyyy/MM/dd'T'HH:mm:ss.SSS",
+        "EEE, dd.MM.yyyy HH:mm",
+        "EEE, dd.MM.yyyy",
+        "dd-MM-yyyy'T'HH:mm",
+        "dd.MM.yyyy'T'HH:mm:ss",
+        "dd-MM-yyyy'T'HHmmss",
+        "dd.MM.yyyy'T'HHmmss",
+        "dd-MM-yy HH:mm:ss",
+        "yyyy-MM-dd'T'HHmmss.SSS",
+        "yyyyMMdd'T'HH:mm:ss.SSSZ",
+        "EEEE, MMMM dd, yyyy HH:mm:ss",
+        "EEEE, dd MMMM yyyy HH:mm:ss",
+        "MMM dd, yyyy HH:mm",
+        "MMM dd, yyyy HH:mm:ss.SSS",
+        "dd MMMM yyyy HH:mm",
+        "EEE, MMM dd, yyyy HH:mm:ss",
+        "EEE, dd MMM yyyy HH:mm",
+        "yyyyMMdd HH:mm:ss",
+        "dd.MM.yy HH:mm:ss",
+        "MMM dd, yyyy HH:mm:ss a",
+        "MMMM dd, yyyy HH:mm a",
+        "yyyy/MM/dd HH:mm",
+        "yyyy-MM-dd HH:mm:ssZ",
+        "dd/MM/yyyy'T'HH:mm:ss.SSSZ",
+        "yyyyMMdd'T'HH:mm:ss.SSSXXX",
+        "EEEE, dd.MM.yyyy'T'HH:mm:ss.SSS",
+        "MMMM dd yyyy, HH:mm:ss",
+        "EEEE, dd MMM yyyy HH:mm:ss.SSS",
+        "EEE, MMM dd yyyy HH:mm:ss.SSS",
+        "MMM dd yyyy HH:mm:ss.SSS",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS",
+        "dd.MM.yyyy HH:mm",
+        "dd/MM/yyyy HH:mm",
+        "dd MMM yyyy HH:mm:ss",
+        "dd MMM yyyy HH:mm:ss.SSS",
+        "EEE, MMM dd yyyy HH:mm:ss a"
+    ]
+
+    func parse(_ value: String, format: String) -> Date? {
+        let candidate = normalized(value)
+        guard !candidate.isEmpty else { return nil }
+
+        let formatter = DateFormatterFactory.shared.formatter(for: format)
+        return formatter.date(from: candidate)
+    }
+
+    func detect(_ value: String) -> Date? {
+        let candidate = normalized(value)
+        guard !candidate.isEmpty else { return nil }
+
+        if let unixDate = parseUnixTimestamp(candidate) {
+            return unixDate
+        }
+
+        if let isoDate = parseISO8601(candidate) {
+            return isoDate
+        }
+
+        for format in knownFormats where !format.isEmpty {
+            let formatter = DateFormatterFactory.shared.formatter(for: format)
+            if let date = formatter.date(from: candidate) {
+                return date
+            }
+        }
+
+        return nil
+    }
+
+    private func normalized(_ value: String) -> String {
+        value.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func parseUnixTimestamp(_ value: String) -> Date? {
+        guard value.allSatisfy({ $0.isNumber || $0 == "." || $0 == "-" }) else {
+            return nil
+        }
+
+        guard let numeric = Double(value) else { return nil }
+
+        let seconds: Double
+        switch value.replacingOccurrences(of: "-", with: "").count {
+        case 13:
+            seconds = numeric / 1000
+        case 16:
+            seconds = numeric / 1_000_000
+        default:
+            seconds = numeric
+        }
+
+        return Date(timeIntervalSince1970: seconds)
+    }
+
+    private func parseISO8601(_ value: String) -> Date? {
+        for formatter in ISO8601FormatterFactory.shared.formatters {
+            if let date = formatter.date(from: value) {
                 return date
             }
         }
         return nil
     }
+}
 
-    
-    ///   Formats a detected date string according to the specified display mode.
-    ///
-    /// - Parameter mode: The `DateExtensionsDisplayMode` to be used for formatting.
-    /// - Returns: A formatted date string if the detection and formatting are successful, otherwise the original string.
-    ///
-    func formattedDate(_ mode: DateExtensionDisplayMode) -> String {
-        guard let date = self.detectedDate() else { return self }
+@available(iOS 13.0, *)
+private final class DateFormatterFactory {
+    static let shared = DateFormatterFactory()
+
+    private let cache = NSCache<NSString, DateFormatter>()
+    private let lock = NSLock()
+
+    private init() {
+        cache.countLimit = 256
+    }
+
+    func formatter(for format: String) -> DateFormatter {
+        lock.lock()
+        defer { lock.unlock() }
+
+        if let cached = cache.object(forKey: format as NSString) {
+            return cached
+        }
 
         let formatter = DateFormatter()
-        formatter.locale = Locale.autoupdatingCurrent
-        
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone.autoupdatingCurrent
+        formatter.dateFormat = format
+
+        cache.setObject(formatter, forKey: format as NSString)
+        return formatter
+    }
+
+    func string(from date: Date, mode: DateExtensionDisplayMode) -> String {
         switch mode {
-        case .hhmmss:
-            formatter.dateFormat = "HH:mm:ss"
-        case .hhmm:
-            formatter.dateFormat = "HH:mm"
-        case .mmss:
-            formatter.dateFormat = "mm:ss"
-        case .hhmmAMPM:
-            formatter.dateFormat = "hh:mm a"
-        case .hhmmssAMPM:
-            formatter.dateFormat = "hh:mm:ss a"
-        case .ddMMyyyy:
-            formatter.dateFormat = "dd.MM.yyyy"
-        case .MMddyyyy:
-            formatter.dateFormat = "MM/dd/yyyy"
-        case .yyyyMMdd:
-            formatter.dateFormat = "yyyy-MM-dd"
-        case .ddMMMMyyyy:
-            formatter.dateFormat = "dd MMMM yyyy"
-        case .EEEEddMMMMyyyy:
-            formatter.dateFormat = "EEEE, dd MMMM yyyy"
-        case .yyyyMMddHHmmss:
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        case .yyyyMMddTHHmmssZ:
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        case .ddMMyyyyHHmm:
-            formatter.dateFormat = "dd.MM.yyyy HH:mm"
         case .relative:
-            let relativeFormatter = RelativeDateTimeFormatter()
-            relativeFormatter.locale = Locale.autoupdatingCurrent
-            return relativeFormatter.localizedString(for: date, relativeTo: Date())
+            return relativeString(for: date)
         case .unixTimestamp:
-            return "\(Int(date.timeIntervalSince1970))"
+            return String(Int(date.timeIntervalSince1970))
         case .custom(let customFormat):
-            formatter.dateFormat = customFormat
+            return formatter(for: customFormat).string(from: date)
         case .iso8601:
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            return ISO8601FormatterFactory.shared.milliseconds.string(from: date)
+        case .hhmmss:
+            return formatter(for: "HH:mm:ss").string(from: date)
+        case .hhmm:
+            return formatter(for: "HH:mm").string(from: date)
+        case .mmss:
+            return formatter(for: "mm:ss").string(from: date)
+        case .hhmmAMPM:
+            return formatter(for: "hh:mm a").string(from: date)
+        case .hhmmssAMPM:
+            return formatter(for: "hh:mm:ss a").string(from: date)
+        case .ddMMyyyy:
+            return formatter(for: "dd.MM.yyyy").string(from: date)
+        case .MMddyyyy:
+            return formatter(for: "MM/dd/yyyy").string(from: date)
+        case .yyyyMMdd:
+            return formatter(for: "yyyy-MM-dd").string(from: date)
+        case .ddMMMMyyyy:
+            return formatter(for: "dd MMMM yyyy").string(from: date)
+        case .EEEEddMMMMyyyy:
+            return formatter(for: "EEEE, dd MMMM yyyy").string(from: date)
+        case .yyyyMMddHHmmss:
+            return formatter(for: "yyyy-MM-dd HH:mm:ss").string(from: date)
+        case .yyyyMMddTHHmmssZ:
+            return formatter(for: "yyyy-MM-dd'T'HH:mm:ssZ").string(from: date)
+        case .ddMMyyyyHHmm:
+            return formatter(for: "dd.MM.yyyy HH:mm").string(from: date)
         case .rfc2822:
-            formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+            return formatter(for: "EEE, dd MMM yyyy HH:mm:ss Z").string(from: date)
         case .rfc3339:
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
+            return formatter(for: "yyyy-MM-dd'T'HH:mm:ssXXX").string(from: date)
         case .yyyyMM:
-            formatter.dateFormat = "yyyy-MM"
+            return formatter(for: "yyyy-MM").string(from: date)
         case .ddMMMM:
-            formatter.dateFormat = "dd MMMM"
+            return formatter(for: "dd MMMM").string(from: date)
         }
-        
-        return formatter.string(from: date)
+    }
+
+    private func relativeString(for date: Date) -> String {
+#if canImport(UIKit) || canImport(AppKit) || canImport(WatchKit)
+        let formatter = RelativeDateTimeFormatter()
+        formatter.locale = Locale.autoupdatingCurrent
+        return formatter.localizedString(for: date, relativeTo: Date())
+#else
+        let interval = Int(date.timeIntervalSinceNow)
+        if abs(interval) < 60 { return "now" }
+        let minutes = interval / 60
+        if abs(minutes) < 60 { return "\(abs(minutes)) min" }
+        let hours = minutes / 60
+        if abs(hours) < 24 { return "\(abs(hours)) h" }
+        let days = hours / 24
+        return "\(abs(days)) d"
+#endif
+    }
+}
+
+@available(iOS 13.0, *)
+private final class ISO8601FormatterFactory {
+    static let shared = ISO8601FormatterFactory()
+
+    let milliseconds: ISO8601DateFormatter
+    let formatters: [ISO8601DateFormatter]
+
+    private init() {
+        let withMilliseconds = ISO8601DateFormatter()
+        withMilliseconds.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        withMilliseconds.timeZone = TimeZone(secondsFromGMT: 0)
+
+        let internetDateTime = ISO8601DateFormatter()
+        internetDateTime.formatOptions = [.withInternetDateTime]
+        internetDateTime.timeZone = TimeZone(secondsFromGMT: 0)
+
+        let basicDateTime = ISO8601DateFormatter()
+        basicDateTime.formatOptions = [.withFullDate, .withTime, .withColonSeparatorInTime, .withDashSeparatorInDate]
+        basicDateTime.timeZone = TimeZone(secondsFromGMT: 0)
+
+        self.milliseconds = withMilliseconds
+        self.formatters = [withMilliseconds, internetDateTime, basicDateTime]
     }
 }
